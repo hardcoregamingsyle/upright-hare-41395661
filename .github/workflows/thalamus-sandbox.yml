@@ -1,0 +1,83 @@
+# Managed by Thalamus. Starts a dev server + Cloudflare tunnel for live preview.
+name: Thalamus Sandbox
+
+on:
+  workflow_dispatch:
+    inputs:
+      callback_url:
+        description: Where to POST the tunnel URL
+        required: true
+      os:
+        description: Runner OS
+        required: false
+        default: ubuntu-latest
+      start_command:
+        description: Command to start the dev server
+        required: false
+        default: npm run dev --
+      port:
+        description: Port the dev server listens on
+        required: false
+        default: '3000'
+
+jobs:
+  sandbox:
+    runs-on: ${{ inputs.os || 'ubuntu-latest' }}
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          if [ -f package.json ]; then npm install; fi
+
+      - name: Download and install cloudflared
+        run: |
+          curl -sL https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -o /tmp/cloudflared
+          chmod +x /tmp/cloudflared
+
+      - name: Start tunnel and dev server
+        shell: bash
+        run: |
+          PORT="${{ inputs.port }}"
+          CMD="${{ inputs.start_command }}"
+
+          # Start cloudflared tunnel in background
+          /tmp/cloudflared tunnel --url "http://localhost:$PORT" > /tmp/tunnel.log 2>&1 &
+          CLOUD_PID=$!
+
+          # Wait up to 60s for tunnel URL
+          TUNNEL_URL=""
+          for i in $(seq 1 30); do
+            TUNNEL_URL=$(grep -oP 'https?://[a-zA-Z0-9.-]+\.trycloudflare\.com' /tmp/tunnel.log | head -1)
+            if [ -n "$TUNNEL_URL" ]; then break; fi
+            sleep 2
+          done
+
+          # Start dev server in background
+          echo "Starting: $CMD --host 0.0.0.0 --port $PORT"
+          if echo "$CMD" | grep -q "vite\|dev\|next\|start"; then
+            eval "$CMD --host 0.0.0.0 --port $PORT" > /tmp/devserver.log 2>&1 &
+          else
+            eval "$CMD" > /tmp/devserver.log 2>&1 &
+          fi
+          DEV_PID=$!
+
+          # Report tunnel URL back to Thalamus
+          if [ -n "$TUNNEL_URL" ]; then
+            echo "Tunnel URL: $TUNNEL_URL"
+            curl -sS -X POST "${{ inputs.callback_url }}" \
+              -H 'Content-Type: application/json' \
+              -d "$(jq -n --arg url "$TUNNEL_URL" --arg pid "$DEV_PID" '{tunnelUrl: $url, status: "running", devPid: $pid}')"
+          else
+            echo "No tunnel URL found — sandbox has no public endpoint"
+            curl -sS -X POST "${{ inputs.callback_url }}" \
+              -H 'Content-Type: application/json' \
+              -d '{"status":"failed","error":"tunnel-not-established"}'
+          fi
+
+          # Keep alive — wait for dev server to exit (or Actions to cancel us)
+          wait $DEV_PID 2>/dev/null || true

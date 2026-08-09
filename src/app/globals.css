@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 10, 10, 10;
+  --background-end-rgb: 30, 10, 10;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  min-height: 100vh;
+}
+
+.prose-custom {
+  max-width: 65ch;
+  margin: 0 auto;
+}
+
+.prose-custom h1,
+.prose-custom h2,
+.prose-custom h3 {
+  color: #fbbf24;
+  font-family: Georgia, serif;
+}
+
+.prose-custom a {
+  color: #f59e0b;
+  text-decoration: underline;
+}
+
+.prose-custom blockquote {
+  border-left: 4px solid #7f1d1d;
+  padding-left: 1rem;
+  font-style: italic;
+  color: #fbbf24;
+}

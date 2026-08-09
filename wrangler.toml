@@ -1,0 +1,14 @@
+name = "technoblade-tribute"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+# If using Cloudflare D1 for database (replace SQLite):
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "technoblade-tribute-db"
+# database_id = "YOUR_DATABASE_ID"
+
+# Environment variables (set these in Cloudflare Pages dashboard instead):
+# [vars]
+# DATABASE_URL = "sqlite:./dev.db"
