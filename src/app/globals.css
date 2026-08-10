@@ -3,42 +3,50 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 10, 10, 10;
-  --background-end-rgb: 30, 10, 10;
+  --blood: #7f1d1d;
+  --nether: #450a0a;
+  --crown: #fbbf24;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-  min-height: 100vh;
+  @apply bg-nether text-gray-100 antialiased;
 }
 
-.prose-custom {
-  max-width: 65ch;
-  margin: 0 auto;
+::selection {
+  background-color: var(--blood);
+  color: #fff;
 }
 
-.prose-custom h1,
-.prose-custom h2,
-.prose-custom h3 {
-  color: #fbbf24;
-  font-family: Georgia, serif;
+@layer components {
+  .container-tight {
+    @apply mx-auto w-full max-w-3xl px-4 sm:px-6;
+  }
+
+  .card {
+    @apply rounded-xl border border-red-900/40 bg-nethered/60 p-6 backdrop-blur;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-crown;
+  }
+
+  .btn-primary {
+    @apply btn bg-blood text-white hover:bg-red-800;
+  }
+
+  .input {
+    @apply w-full rounded-lg border border-red-900/50 bg-black/40 px-4 py-2.5 text-sm text-gray-100 placeholder-gray-500 focus:border-crown focus:outline-none focus:ring-1 focus:ring-crown;
+  }
 }
 
-.prose-custom a {
-  color: #f59e0b;
-  text-decoration: underline;
+textarea {
+  resize: vertical;
 }
 
-.prose-custom blockquote {
-  border-left: 4px solid #7f1d1d;
-  padding-left: 1rem;
-  font-style: italic;
-  color: #fbbf24;
+.bg-nethered {
+  background-color: rgba(69, 10, 10, 0.55);
 }

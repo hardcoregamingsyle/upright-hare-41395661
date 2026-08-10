@@ -1,6 +1,3 @@
-// Prisma schema for the Technoblade tribute site.
-// Drive the home page (quotes), the memorial timeline, and the secure guestbook.
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,28 +7,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Quote {
-  id        Int      @id @default(autoincrement())
-  text      String   @db.Text
-  source    String?
-  createdAt DateTime @default(now())
-}
-
-model MemorialMoment {
-  id      Int    @id @default(autoincrement())
-  title   String
-  year    String?
-  body    String @db.Text
-  kind    String @default("milestone") // milestone | legend | farewell
-  sort    Int    @default(0)
-}
-
 model GuestbookEntry {
   id        Int      @id @default(autoincrement())
   name      String
-  message   String   @db.Text
-  location  String? // self-reported; trimmed + length capped
+  message   String
   createdAt DateTime @default(now())
-  token     String   @unique // signed ownership token — lets the author delete their note
-  ipHash    String? // SHA-256 of the visitor IP (no raw IPs stored)
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  slug      String   @unique
+  excerpt   String?
+  content   String
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  password  String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
 }
