@@ -1,41 +1,27 @@
 {
-  "name": "technoblade-tribute",
+  "name": "node-app",
   "version": "1.0.0",
-  "private": true,
+  "description": "Secure Node.js application",
+  "main": "src/index.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "test": "vitest",
-    "test:run": "vitest run",
-    "db:push": "prisma db push",
-    "db:seed": "ts-node prisma/seed.ts",
-    "db:setup": "prisma db push && ts-node prisma/seed.ts"
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
   },
+  "keywords": ["nodejs", "express", "api"],
+  "author": "",
+  "license": "MIT",
   "dependencies": {
-    "@prisma/client": "^5.10.0",
-    "bcryptjs": "^2.4.3",
-    "jose": "^5.2.0",
-    "next": "^14.1.0",
-    "prisma": "^5.10.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "zod": "^3.22.4"
+    "express": "^4.18.2",
+    "helmet": "^7.1.0",
+    "cors": "^2.8.5",
+    "express-rate-limit": "^7.1.5",
+    "better-sqlite3": "^9.2.2",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "dotenv": "^16.3.1",
+    "express-validator": "^7.0.1"
   },
-  "devDependencies": {
-    "@testing-library/jest-dom": "^6.4.0",
-    "@testing-library/react": "^14.2.0",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/node": "^20.11.0",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
-    "autoprefixer": "^10.4.17",
-    "jsdom": "^24.0.0",
-    "postcss": "^8.4.35",
-    "tailwindcss": "^3.4.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.0",
-    "vitest": "^1.2.0"
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
