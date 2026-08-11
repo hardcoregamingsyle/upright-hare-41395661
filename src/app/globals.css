@@ -3,50 +3,37 @@
 @tailwind utilities;
 
 :root {
-  --blood: #7f1d1d;
-  --nether: #450a0a;
-  --crown: #fbbf24;
+  --color-nether: #1a0a0a;
+  --color-blood: #8b0000;
+  --color-crown: #ffd700;
+  --color-gold: #daa520;
 }
 
-html {
-  scroll-behavior: smooth;
+.bg-nether {
+  background-color: var(--color-nether);
+}
+
+.bg-blood {
+  background-color: var(--color-blood);
+}
+
+.text-crown {
+  color: var(--color-crown);
+}
+
+.text-gold {
+  color: var(--color-gold);
+}
+
+.border-crown {
+  border-color: var(--color-crown);
+}
+
+.border-blood {
+  border-color: var(--color-blood);
 }
 
 body {
-  @apply bg-nether text-gray-100 antialiased;
-}
-
-::selection {
-  background-color: var(--blood);
-  color: #fff;
-}
-
-@layer components {
-  .container-tight {
-    @apply mx-auto w-full max-w-3xl px-4 sm:px-6;
-  }
-
-  .card {
-    @apply rounded-xl border border-red-900/40 bg-nethered/60 p-6 backdrop-blur;
-  }
-
-  .btn {
-    @apply inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-sm font-semibold transition focus:outline-none focus-visible:ring-2 focus-visible:ring-crown;
-  }
-
-  .btn-primary {
-    @apply btn bg-blood text-white hover:bg-red-800;
-  }
-
-  .input {
-    @apply w-full rounded-lg border border-red-900/50 bg-black/40 px-4 py-2.5 text-sm text-gray-100 placeholder-gray-500 focus:border-crown focus:outline-none focus:ring-1 focus:ring-crown;
-  }
-}
-
-textarea {
-  resize: vertical;
-}
-
-.bg-nethered {
-  background-color: rgba(69, 10, 10, 0.55);
+  background: linear-gradient(to bottom, #1a0a0a, #2d0a0a);
+  min-height: 100vh;
 }

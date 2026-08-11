@@ -33,38 +33,24 @@ const timelineEvents = [
   },
   {
     year: '2022',
-    title: 'The End',
-    description: 'Passed away on June 30, 2022. Technoblade never dies.',
+    title: 'Blood God Ascends',
+    description: 'Alexander passed away on June 30, 2022. Technoblade Never Dies.',
   },
 ];
 
-export default function Timeline() {
+export function Timeline() {
   return (
-    <div className="relative">
-      <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-blood" />
-      
-      <div className="space-y-12">
-        {timelineEvents.map((event, index) => (
-          <div
-            key={event.year}
-            className={`relative flex items-center ${
-              index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-            }`}
-          >
-            <div className="absolute left-4 md:left-1/2 w-4 h-4 bg-crown rounded-full transform -translate-x-1/2 z-10" />
-            
-            <div className={`ml-12 md:ml-0 md:w-1/2 ${
-              index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'
-            }`}>
-              <div className="bg-nether/80 rounded-lg p-6 border border-blood/30">
-                <span className="text-crown font-bold text-lg">{event.year}</span>
-                <h3 className="text-gold font-display text-xl mt-2">{event.title}</h3>
-                <p className="text-gray-300 mt-2">{event.description}</p>
-              </div>
-            </div>
+    <div className="relative border-l-4 border-crown/50 ml-4 md:ml-8 space-y-8">
+      {timelineEvents.map((event, index) => (
+        <div key={index} className="relative pl-8">
+          <div className="absolute -left-3 top-0 w-6 h-6 bg-blood rounded-full border-4 border-crown" />
+          <div className="bg-nether/80 rounded-lg p-6 border border-blood/30">
+            <span className="text-gold font-bold text-lg">{event.year}</span>
+            <h3 className="text-xl font-bold text-crown mt-1">{event.title}</h3>
+            <p className="text-gray-300 mt-2">{event.description}</p>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 }
